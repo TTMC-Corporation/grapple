@@ -78,10 +78,30 @@
                             }
                         }
                     }
+                    if (line.ToLower().StartsWith("loop ") && line.ToLower().EndsWith(" times:"))
+                    {
+                        int num = 1;
+                        Data? lp = Master.Get(line[5..^7]);
+                        if (lp != null && lp.data != null && lp.type == 1)
+                        {
+                            num = BitConverter.ToInt32(lp.data);
+                        }
+                        List<string> loopLines = Loop.LoopField(code, i + 1);
+                        int loopID = ++Loop.loops;
+                        for (int x = 0; x < num; x++)
+                        {
+                            Variable.SetVariable("loop-value", x+1);
+                            Variable.SetVariable("loop-value-" + loopID, x+1);
+                            RunScript(loopLines.ToArray());
+                            Variable.Remove("loop-value");
+                            Variable.Remove("loop-value-" + loopID);
+                        }
+                        Loop.loops -= 1;
+                    }
                 }
             }
         }
-        private static int PowerOfLine(string line)
+        public static int PowerOfLine(string line)
         {
             int power = 0;
             while (true)

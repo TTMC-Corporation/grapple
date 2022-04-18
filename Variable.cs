@@ -17,7 +17,7 @@ namespace Grapple
                 type = type,
                 data = data
             };
-            variables.Add(name, dt);
+            variables[name] = dt;
         }
         public static void SetVariable(string name, int integer)
         {
@@ -26,7 +26,7 @@ namespace Grapple
                 type = 1,
                 data = BitConverter.GetBytes(integer)
             };
-            variables.Add(name, dt);
+            variables[name] = dt;
         }
         public static void SetVariable(string name, string? text)
         {
@@ -35,7 +35,7 @@ namespace Grapple
                 type = 0,
                 data = Encoding.UTF8.GetBytes(text == null ? string.Empty : text)
             };
-            variables.Add(name, dt);
+            variables[name] = dt;
         }
         public static string? GetString(string name)
         {
@@ -75,6 +75,13 @@ namespace Grapple
                 return dt;
             }
             return null;
+        }
+        public static void Remove(string name)
+        {
+            if (variables.ContainsKey(name))
+            {
+                variables.Remove(name);
+            }
         }
     }
 }
