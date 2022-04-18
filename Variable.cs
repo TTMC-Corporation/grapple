@@ -19,12 +19,21 @@ namespace Grapple
             };
             variables.Add(name, dt);
         }
-        public static void SetVariable(string name, int data, byte type)
+        public static void SetVariable(string name, int integer)
         {
             Data dt = new()
             {
-                type = type,
-                data = BitConverter.GetBytes(data)
+                type = 1,
+                data = BitConverter.GetBytes(integer)
+            };
+            variables.Add(name, dt);
+        }
+        public static void SetVariable(string name, string? text)
+        {
+            Data dt = new()
+            {
+                type = 0,
+                data = Encoding.UTF8.GetBytes(text == null ? string.Empty : text)
             };
             variables.Add(name, dt);
         }
@@ -48,7 +57,7 @@ namespace Grapple
             if (variables.ContainsKey(name))
             {
                 Data dt = variables[name];
-                if (dt.type == 0)
+                if (dt.type == 1)
                 {
                     if (dt.data != null)
                     {

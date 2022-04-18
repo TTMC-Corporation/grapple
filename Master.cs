@@ -4,15 +4,24 @@ namespace Grapple
 {
     public class Master
     {
-        public static string? answer = null;
         public static int errors = 0;
         public static int warnings = 0;
+        public static bool Check(string one, string two)
+        {
+            Data? first = Get(one);
+            Data? second = Get(two);
+            if (first != null && second != null && first.data != null && second.data != null && first.type == second.type && Convert.ToBase64String(first.data) == Convert.ToBase64String(second.data))
+            {
+                return true;
+            }
+            return false;
+        }
         public static void SetPro(string one, string two)
         {
             Data? data = Get(two);
             if (data != null && data.data != null)
             {
-                Variable.SetVariable(one[1..^1], data.data, data.type);
+                Variable.SetVariable(one, data.data, data.type);
             }
         }
         public static string Solve(string key)
@@ -26,7 +35,7 @@ namespace Grapple
                 {
                     if (trigger)
                     {
-                        Data? data = Variable.Get(req[1..^1]);
+                        Data? data = Variable.Get(req);
                         if (data != null && data.data != null)
                         {
                             if (data.type == 0)
@@ -58,10 +67,6 @@ namespace Grapple
         }
         public static Data? Get(string key)
         {
-            if (key.StartsWith('%') && key.EndsWith('%'))
-            {
-                key = key[1..^1];
-            }
             if (int.TryParse(key, out int intData))
             {
                 Data data = new Data()
@@ -71,10 +76,6 @@ namespace Grapple
                 };
                 return data;
             }
-            else if (key.StartsWith('{') && key.EndsWith('}'))
-            {
-                return Variable.Get(Solve(key[1..^1]));
-            }
             else if (key.StartsWith('\"') && key.EndsWith('\"'))
             {
                 return new Data()
@@ -83,7 +84,7 @@ namespace Grapple
                     data = Encoding.UTF8.GetBytes(Solve(key[1..^1]))
                 };
             }
-            return null;
+            return Variable.Get(Solve(key));
         }
     }
 }
