@@ -58,6 +58,10 @@
                             int nzx = line.IndexOf(" from ");
                             Master.RemovePro(line[7..nzx], line[(nzx + 6)..]);
                         }
+                        if (line.StartsWith("clear "))
+                        {
+                            Master.ClearPro(line[6..]);
+                        }
                         if (line.ToLower().StartsWith("if ") && line.ToLower().Contains(" is "))
                         {
                             int nzx = line.IndexOf(" is ");

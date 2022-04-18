@@ -12,6 +12,7 @@
             {
                 if (File.Exists(args[0]))
                 {
+                    Engine.LoadBase();
                     string[] lines = File.ReadAllLines(args[0]);
                     Base.RunScript(lines);
                 }

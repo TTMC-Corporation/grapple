@@ -24,6 +24,10 @@ namespace Grapple
                 Variable.SetVariable(two, BitConverter.ToInt32(second.data) - BitConverter.ToInt32(first.data));
             }
         }
+        public static void ClearPro(string name)
+        {
+            Variable.Remove(Solve(name));
+        }
         public static bool Check(string one, string two)
         {
             Data? first = Get(one);
@@ -39,7 +43,7 @@ namespace Grapple
             Data? data = Get(two);
             if (data != null && data.data != null)
             {
-                Variable.SetVariable(one, data.data, data.type);
+                Variable.SetVariable(Solve(one), data.data, data.type);
             }
         }
         public static string Solve(string key)

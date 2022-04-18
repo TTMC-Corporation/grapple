@@ -1,5 +1,12 @@
 ﻿namespace Grapple
 {
+    public class Engine
+    {
+        public static void LoadBase()
+        {
+            Variable.SetVariable("user", Environment.UserName, true);
+        }
+    }
     public class Debug
     {
         public static void Print(string text, ConsoleColor color = ConsoleColor.Gray)

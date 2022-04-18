@@ -6,64 +6,47 @@ namespace Grapple
     {
         public byte[]? data { get; set; }
         public byte type { get; set; }
+        public bool readOnly = false;
     }
     public class Variable
     {
         private static Dictionary<string, Data> variables = new Dictionary<string, Data>();
-        public static void SetVariable(string name, byte[] data, byte type)
+        public static void SetVariable(string name, string? text, bool readOnly = false)
         {
-            Data dt = new()
-            {
-                type = type,
-                data = data
-            };
-            variables[name] = dt;
+            SetVariable(name, Encoding.UTF8.GetBytes(text == null ? string.Empty : text), 0, readOnly);
         }
-        public static void SetVariable(string name, int integer)
+        public static void SetVariable(string name, int integer, bool readOnly = false)
         {
-            Data dt = new()
-            {
-                type = 1,
-                data = BitConverter.GetBytes(integer)
-            };
-            variables[name] = dt;
+            SetVariable(name, BitConverter.GetBytes(integer), 1, readOnly);
         }
-        public static void SetVariable(string name, string? text)
+        public static void SetVariable(string name, byte[] data, byte type, bool readOnly = false)
         {
-            Data dt = new()
+            if (!(variables.ContainsKey(name) && variables[name].readOnly))
             {
-                type = 0,
-                data = Encoding.UTF8.GetBytes(text == null ? string.Empty : text)
-            };
-            variables[name] = dt;
+                Data dt = new()
+                {
+                    type = type,
+                    data = data,
+                    readOnly = readOnly
+                };
+                variables[name] = dt;
+            }
         }
         public static string? GetString(string name)
         {
-            if (variables.ContainsKey(name))
+            Data? x = Get(name);
+            if (x != null && x.data != null && x.type == 0)
             {
-                Data dt = variables[name];
-                if (dt.type == 0)
-                {
-                    if (dt.data != null)
-                    {
-                        return Encoding.UTF8.GetString(dt.data);
-                    }
-                }
+                return Encoding.UTF8.GetString(x.data);
             }
             return null;
         }
         public static int? GetInt(string name)
         {
-            if (variables.ContainsKey(name))
+            Data? x = Get(name);
+            if (x != null && x.data != null && x.type == 1)
             {
-                Data dt = variables[name];
-                if (dt.type == 1)
-                {
-                    if (dt.data != null)
-                    {
-                        return BitConverter.ToInt32(dt.data);
-                    }
-                }
+                return BitConverter.ToInt32(x.data);
             }
             return null;
         }
@@ -76,11 +59,14 @@ namespace Grapple
             }
             return null;
         }
-        public static void Remove(string name)
+        public static void Remove(string name, bool force = false)
         {
             if (variables.ContainsKey(name))
             {
-                variables.Remove(name);
+                if (force || variables[name].readOnly)
+                {
+                    variables.Remove(name);
+                }
             }
         }
     }
