@@ -6,6 +6,24 @@ namespace Grapple
     {
         public static int errors = 0;
         public static int warnings = 0;
+        public static void AddPro(string one, string two)
+        {
+            Data? first = Get(one);
+            Data? second = Get(two);
+            if (first != null && second != null && first.data != null && second.data != null && first.type == second.type)
+            {
+                Variable.SetVariable(two, BitConverter.ToInt32(second.data) + BitConverter.ToInt32(first.data));
+            }
+        }
+        public static void RemovePro(string one, string two)
+        {
+            Data? first = Get(one);
+            Data? second = Get(two);
+            if (first != null && second != null && first.data != null && second.data != null && first.type == second.type)
+            {
+                Variable.SetVariable(two, BitConverter.ToInt32(second.data) - BitConverter.ToInt32(first.data));
+            }
+        }
         public static bool Check(string one, string two)
         {
             Data? first = Get(one);

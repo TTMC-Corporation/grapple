@@ -48,6 +48,16 @@
                             int nzx = line.IndexOf(" to ");
                             Master.SetPro(line[4..nzx], line[(nzx + 4)..]);
                         }
+                        if (line.StartsWith("add ") && line.Contains(" to "))
+                        {
+                            int nzx = line.IndexOf(" to ");
+                            Master.AddPro(line[4..nzx], line[(nzx + 4)..]);
+                        }
+                        if (line.StartsWith("remove ") && line.Contains(" from "))
+                        {
+                            int nzx = line.IndexOf(" from ");
+                            Master.RemovePro(line[7..nzx], line[(nzx + 6)..]);
+                        }
                         if (line.ToLower().StartsWith("if ") && line.ToLower().Contains(" is "))
                         {
                             int nzx = line.IndexOf(" is ");
