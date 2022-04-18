@@ -3,6 +3,7 @@
 	internal class Loop
 	{
 		public static int loops = 0;
+		public static bool run = true;
 		public static List<string> LoopField(string[] code, int start)
 		{
 			List<string> theCode = new();
