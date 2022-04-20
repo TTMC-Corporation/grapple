@@ -8,7 +8,7 @@ Installation is not available currently!
 
 ## Usage
 
-```python
+```bash
 # Set Variable
 set {x} to 1
 
