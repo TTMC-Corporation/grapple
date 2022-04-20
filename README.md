@@ -18,8 +18,9 @@ say "Something"
 # Using colors:
 say "&aI'm green"
 
-# Write your variable to console
-say "X is: %{x}%"
+# Add to variable and remove from a variable
+add 1 to {x}
+remove 1 from {x}
 
 # Read from console
 ask "How's your day? "
