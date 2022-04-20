@@ -9,13 +9,17 @@ Installation is not available currently!
 ## Usage
 
 ```python
-import foobar
-
 # Set Variable
 set {x} to 1
 
 # Write to Console
 say "Something"
+
+# Using colors:
+say "&aI'm green"
+
+# Write your variable to console
+say "X is: %{x}%"
 
 # Read from console
 ask "How's your day? "
